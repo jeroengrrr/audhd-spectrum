@@ -35,7 +35,7 @@ svg{display:block;width:100%;height:auto}
 <h1>AUDHD-spectrum: score jezelf</h1>
 <div id="ui"></div>
 <div style="position:relative"><div class="chart" id="chart"></div><button id="d" aria-label="Sla model op als afbeelding" title="Sla model op als afbeelding" style="display:none;position:absolute;top:10px;right:10px;width:36px;height:36px;padding:0;flex:none;align-items:center;justify-content:center;background:#fff;color:#1a1a2e;border:1px solid #d6d0e6;border-radius:8px"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:20px;height:20px"><path d="M12 4v11"/><path d="M7 11l5 5 5-5"/><path d="M5 20h14"/></svg></button></div>
-<p class="note" id="nt" style="display:none">Binnen de kern (score 1–2): niet op het spectrum.<br>Buiten de kern (score 3–8): op het spectrum.</p>
+<p class="note" id="nt" style="display:none">Binnen de kern (score 1–3): niet op het spectrum.<br>Buiten de kern (score 4–7): op het spectrum.</p>
 <p class="note">Dit is een reflectiehulpmiddel, geen diagnostisch instrument.</p>
 </main>
 <script>
@@ -43,7 +43,7 @@ var A=[["Task Paralysis"],["Object","Permanence"],["Impulsivity"],["Time","Blind
 var D=["Een taak niet kunnen starten, ook al wil je het en weet je wat er moet gebeuren.","Wat je niet ziet, vergeet je makkelijk: spullen, afspraken of mensen die uit zicht zijn, zijn ook uit gedachten.","Handelen of iets zeggen zonder eerst na te denken, zoals impulsaankopen of anderen onderbreken.","Moeite om te voelen hoeveel tijd er verstrijkt of nodig is. Je komt te laat of onderschat hoelang iets duurt.","De behoefte aan prikkels, nieuwigheid of beloning, bijvoorbeeld door risico’s, snacks, scrollen of steeds iets nieuws beginnen.","Een innerlijke of uiterlijke onrust: je lichaam kan niet stilzitten of je hoofd staat nooit uit.","Moeite met plannen, organiseren, op gang komen en dingen afronden.","Je gedrag, reacties of interesses verbergen of aanpassen om erbij te horen, wat veel energie kost.","Herhalende bewegingen of geluiden om te kalmeren, op te laden of te focussen, zoals wiebelen, friemelen of neuriën.","Emoties komen sterk of snel binnen en zijn moeilijk te dempen of te laten zakken.","Sterke reacties op geluid, licht, geur, aanraking of smaak, bijvoorbeeld labels in kleding of bepaalde geluiden.","Intense, diepgaande aandacht voor een onderwerp of activiteit, waarbij tijd en omgeving wegvallen.","Moeite om te bepalen wat het belangrijkst of het eerst aan de beurt is, waardoor alles even urgent voelt.","Signalen van je lichaam laat of onduidelijk opmerken, zoals honger, dorst, vermoeidheid of pijn.","Zeer intense emotionele pijn bij echte of ingebeelde afwijzing of kritiek.","Behoefte aan vaste patronen en voorspelbaarheid. Veranderingen in plannen of volgorde zijn stressvol.","Te veel prikkels tegelijk, waardoor je overspoeld raakt en moet terugtrekken of afsluiten.","Voorkeur voor bekende plekken, mensen, eten of media, en liever het vertrouwde herhalen dan iets nieuws.","Moeite om ongeschreven sociale signalen te lezen, zoals toon, lichaamstaal, sarcasme of wanneer het jouw beurt is.","Plezier of rust vinden in herhaling, zoals dezelfde handelingen, liedjes, series of rituelen."];
 var names=A.map(function(l){return l.join(" ")});
 var S=A.map(function(){return null}),i=0,tmp=1;
-var CX=320,CY=320,R=235,R0=0.225*R,BW=(R-R0)/6;
+var CX=320,CY=320,R=235,BW=R/7,R0=3*BW;
 function pt(r,a){a=a*Math.PI/180;return[CX+r*Math.sin(a),CY-r*Math.cos(a)]}
 function cell(r1,r2,a0,a1){var p1=pt(r2,a0),p2=pt(r2,a1),p3=pt(r1,a1),p4=pt(r1,a0);
  if(r1===0)return"M"+CX+" "+CY+"L"+p1+"A"+r2+" "+r2+" 0 0 1 "+p2+"Z";
@@ -54,17 +54,15 @@ function chart(cur){
   var a0=k*18,a1=a0+18,v=(k===cur)?tmp:S[k];
   s+='<path d="'+cell(R0,R,a0,a1)+'" fill="#f4effb"/>';
   if(v!==null){
-   s+='<path d="'+cell(0,R0/2,a0,a1)+'" fill="#ea9fab"/>';
-   if(v>=2)s+='<path d="'+cell(R0/2,R0,a0,a1)+'" fill="#d1707f"/>';
-   for(var b=1;b<=v-2;b++){var L=80-(b-1)*10;
-    s+='<path d="'+cell(R0+(b-1)*BW,R0+b*BW,a0,a1)+'" fill="hsl(265,62%,'+L+'%)"/>'}
+   for(var b=1;b<=v;b++){var f=b<=3?["#f3c3cb","#e69aa7","#d1707f"][b-1]:'hsl(265,62%,'+(78-(b-4)*14)+'%)';
+    s+='<path d="'+cell((b-1)*BW,b*BW,a0,a1)+'" fill="'+f+'"/>'}
   }
  }
  s+='<g fill="none" stroke="#2a2a45" stroke-width=".6" opacity=".75">';
- for(var b=1;b<=6;b++)s+='<circle cx="'+CX+'" cy="'+CY+'" r="'+(R0+(b-1)*BW)+'"/>';
- s+='<circle cx="'+CX+'" cy="'+CY+'" r="'+R0/2+'"/>';
+ for(var b=1;b<=6;b++)s+='<circle cx="'+CX+'" cy="'+CY+'" r="'+b*BW+'"/>';
  for(var k=0;k<10;k++){var p=pt(R+5,k*18),q=pt(R+5,k*18+180);s+='<line x1="'+p[0]+'" y1="'+p[1]+'" x2="'+q[0]+'" y2="'+q[1]+'"/>'}
  s+='</g><circle cx="'+CX+'" cy="'+CY+'" r="'+R0+'" fill="none" stroke="#2a2a45" stroke-width="2"/><circle cx="'+CX+'" cy="'+CY+'" r="'+R+'" fill="none" stroke="#2a2a45" stroke-width="2.5"/>';
+ s+='<g font-size="10" font-family="system-ui,sans-serif" fill="#1a1a2e" stroke="#fff" stroke-width="3" paint-order="stroke" text-anchor="middle">';for(var b=1;b<=7;b++)s+='<text x="'+(CX+9)+'" y="'+(CY-(b-.5)*BW+3.5)+'">'+b+'</text>';s+='</g>';
  if(cur>=0&&cur<20)s+='<path d="'+cell(0,R,cur*18,cur*18+18)+'" fill="none" stroke="#e8590c" stroke-width="3" stroke-linejoin="round"/>';
  for(var k=0;k<20;k++){
   var th=9+18*k,p=pt(R,th),l=A[k],n=l.length,top=Math.cos(th*Math.PI/180)>0,hot=(k===cur);
@@ -78,7 +76,7 @@ function ui(){
  var u=document.getElementById("ui"),h="";
  if(i<20){
   tmp=S[i]!==null?S[i]:1;
-  h='<div class="card"><div class="prog">Aspect '+(i+1)+' van 20</div><p class="q">Geef aan hoe je scoort op het volgende aspect: <b>'+names[i]+'</b></p><p class="ds">'+D[i]+'</p><div class="val" id="v">'+tmp+'</div><input type="range" id="r" min="1" max="8" step="1" value="'+tmp+'" aria-label="Score voor '+names[i]+'"><div class="ticks"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span></div><div class="ends"><span>laag</span><span>hoog</span></div><div class="row"><button id="b" '+(i?'':'disabled')+'>Vorige</button><button id="n" class="p">'+(i<19?'Volgende':'Toon resultaat')+'</button></div></div>';
+  h='<div class="card"><div class="prog">Aspect '+(i+1)+' van 20</div><p class="q">Geef aan hoe je scoort op het volgende aspect: <b>'+names[i]+'</b></p><p class="ds">'+D[i]+'</p><div class="val" id="v">'+tmp+'</div><input type="range" id="r" min="1" max="7" step="1" value="'+tmp+'" aria-label="Score voor '+names[i]+'"><div class="ticks"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span></div><div class="ends"><span>laag</span><span>hoog</span></div><div class="row"><button id="b" '+(i?'':'disabled')+'>Vorige</button><button id="n" class="p">'+(i<19?'Volgende':'Toon resultaat')+'</button></div></div>';
   u.innerHTML=h;
   document.getElementById("chart").style.display="none";document.getElementById("nt").style.display="none";document.getElementById("d").style.display="none";
   var r=document.getElementById("r");
