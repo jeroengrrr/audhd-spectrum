@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="nl"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AUDHD-spectrum: score jezelf</title>
+<style>
+:root{box-sizing:border-box;--bg:#fff;--tx:#1a1a2e;--mu:#5d5a73;--bd:#d6d0e6;--ac:#4b3fd1;--cd:#f6f3fc;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#17161f;--tx:#ececf4;--mu:#a7a3bd;--bd:#3a3750;--ac:#9a90ff;--cd:#201f2c}}
+:root[data-theme="dark"]{--bg:#17161f;--tx:#ececf4;--mu:#a7a3bd;--bd:#3a3750;--ac:#9a90ff;--cd:#201f2c}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:680px;margin:0 auto;padding:16px}
+h1{font-size:20px;margin:4px 0 12px;font-weight:600}
+.card{background:var(--cd);border:1px solid var(--bd);border-radius:12px;padding:16px;margin-bottom:16px}
+.prog{font-size:13px;color:var(--mu);margin-bottom:6px}
+.q{font-size:18px;margin:0 0 16px}
+.q b{color:var(--ac)}
+.ds{font-size:14px;color:var(--mu);margin:-6px 0 16px}
+.dl{margin-top:8px}
+input[type=range]{width:100%;accent-color:var(--ac);height:32px;margin:0}
+.ticks{display:flex;justify-content:space-between;padding:0 6px;font-size:14px;color:var(--mu)}
+.ends{display:flex;justify-content:space-between;font-size:12px;color:var(--mu);margin-top:2px}
+.val{text-align:center;font-size:34px;font-weight:600;color:var(--ac);line-height:1;margin-bottom:6px}
+.row{display:flex;gap:8px;margin-top:16px}
+button{flex:1;font:inherit;padding:10px 14px;border-radius:8px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);cursor:pointer}
+button.p{background:var(--ac);border-color:var(--ac);color:#fff}
+button:disabled{opacity:.4;cursor:default}
+.chart{background:#fff;border:1px solid var(--bd);border-radius:12px;padding:6px}
+svg{display:block;width:100%;height:auto}
+.note{font-size:13px;color:var(--mu);margin:10px 2px 0}
+.list{display:grid;grid-template-columns:1fr 1fr;gap:2px 16px;font-size:14px;margin:0;padding:0;list-style:none}
+.list li{display:flex;justify-content:space-between;border-bottom:1px solid var(--bd);padding:3px 0}
+.list b{color:var(--ac)}
+@media(max-width:480px){.list{grid-template-columns:1fr}}
+</style></head><body><main>
+<h1>AUDHD-spectrum: score jezelf</h1>
+<div id="ui"></div>
+<div style="position:relative"><div class="chart" id="chart"></div><button id="d" aria-label="Sla model op als afbeelding" title="Sla model op als afbeelding" style="display:none;position:absolute;top:10px;right:10px;width:36px;height:36px;padding:0;flex:none;align-items:center;justify-content:center;background:#fff;color:#1a1a2e;border:1px solid #d6d0e6;border-radius:8px"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:20px;height:20px"><path d="M12 4v11"/><path d="M7 11l5 5 5-5"/><path d="M5 20h14"/></svg></button></div>
+<p class="note" id="nt" style="display:none">Binnen de kern (score 1–2): niet op het spectrum.<br>Buiten de kern (score 3–8): op het spectrum.</p>
+<p class="note">Dit is een reflectiehulpmiddel, geen diagnostisch instrument.</p>
+</main>
+<script>
+var A=[["Task Paralysis"],["Object","Permanence"],["Impulsivity"],["Time","Blindness"],["Dopamine","Seeking"],["Hyperactivity","Body Or Brain"],["Executive","Dysfunctioning"],["Masking"],["Stimming /","Fidgeting"],["Emotional","Dysregulation"],["Sensory","Sensitivities"],["Special Interests","Hyperfixations"],["Difficulty","Prioritising"],["Introception","Issues"],["Rejection","Sensitivity","Dysphoria (RSD)"],["Needs","Routine"],["Sensory","Overload"],["Seeks","Familiarity"],["Difficulty","With Social Cues"],["Seeks Repetitive","Behaviour"]];
+var D=["Een taak niet kunnen starten, ook al wil je het en weet je wat er moet gebeuren.","Wat je niet ziet, vergeet je makkelijk: spullen, afspraken of mensen die uit zicht zijn, zijn ook uit gedachten.","Handelen of iets zeggen zonder eerst na te denken, zoals impulsaankopen of anderen onderbreken.","Moeite om te voelen hoeveel tijd er verstrijkt of nodig is. Je komt te laat of onderschat hoelang iets duurt.","De behoefte aan prikkels, nieuwigheid of beloning, bijvoorbeeld door risico’s, snacks, scrollen of steeds iets nieuws beginnen.","Een innerlijke of uiterlijke onrust: je lichaam kan niet stilzitten of je hoofd staat nooit uit.","Moeite met plannen, organiseren, op gang komen en dingen afronden.","Je gedrag, reacties of interesses verbergen of aanpassen om erbij te horen, wat veel energie kost.","Herhalende bewegingen of geluiden om te kalmeren, op te laden of te focussen, zoals wiebelen, friemelen of neuriën.","Emoties komen sterk of snel binnen en zijn moeilijk te dempen of te laten zakken.","Sterke reacties op geluid, licht, geur, aanraking of smaak, bijvoorbeeld labels in kleding of bepaalde geluiden.","Intense, diepgaande aandacht voor een onderwerp of activiteit, waarbij tijd en omgeving wegvallen.","Moeite om te bepalen wat het belangrijkst of het eerst aan de beurt is, waardoor alles even urgent voelt.","Signalen van je lichaam laat of onduidelijk opmerken, zoals honger, dorst, vermoeidheid of pijn.","Zeer intense emotionele pijn bij echte of ingebeelde afwijzing of kritiek.","Behoefte aan vaste patronen en voorspelbaarheid. Veranderingen in plannen of volgorde zijn stressvol.","Te veel prikkels tegelijk, waardoor je overspoeld raakt en moet terugtrekken of afsluiten.","Voorkeur voor bekende plekken, mensen, eten of media, en liever het vertrouwde herhalen dan iets nieuws.","Moeite om ongeschreven sociale signalen te lezen, zoals toon, lichaamstaal, sarcasme of wanneer het jouw beurt is.","Plezier of rust vinden in herhaling, zoals dezelfde handelingen, liedjes, series of rituelen."];
+var names=A.map(function(l){return l.join(" ")});
+var S=A.map(function(){return null}),i=0,tmp=1;
+var CX=320,CY=320,R=235,R0=0.225*R,BW=(R-R0)/6;
+function pt(r,a){a=a*Math.PI/180;return[CX+r*Math.sin(a),CY-r*Math.cos(a)]}
+function cell(r1,r2,a0,a1){var p1=pt(r2,a0),p2=pt(r2,a1),p3=pt(r1,a1),p4=pt(r1,a0);
+ if(r1===0)return"M"+CX+" "+CY+"L"+p1+"A"+r2+" "+r2+" 0 0 1 "+p2+"Z";
+ return"M"+p1+"A"+r2+" "+r2+" 0 0 1 "+p2+"L"+p3+"A"+r1+" "+r1+" 0 0 0 "+p4+"Z"}
+function chart(cur){
+ var s='<svg viewBox="0 0 640 640" role="img" aria-label="Spectrummodel met jouw scores"><title>Spectrummodel</title>';
+ for(var k=0;k<20;k++){
+  var a0=k*18,a1=a0+18,v=(k===cur)?tmp:S[k];
+  s+='<path d="'+cell(R0,R,a0,a1)+'" fill="#f4effb"/>';
+  if(v!==null){
+   s+='<path d="'+cell(0,R0/2,a0,a1)+'" fill="#ea9fab"/>';
+   if(v>=2)s+='<path d="'+cell(R0/2,R0,a0,a1)+'" fill="#d1707f"/>';
+   for(var b=1;b<=v-2;b++){var L=80-(b-1)*10;
+    s+='<path d="'+cell(R0+(b-1)*BW,R0+b*BW,a0,a1)+'" fill="hsl(265,62%,'+L+'%)"/>'}
+  }
+ }
+ s+='<g fill="none" stroke="#2a2a45" stroke-width=".6" opacity=".75">';
+ for(var b=1;b<=6;b++)s+='<circle cx="'+CX+'" cy="'+CY+'" r="'+(R0+(b-1)*BW)+'"/>';
+ s+='<circle cx="'+CX+'" cy="'+CY+'" r="'+R0/2+'"/>';
+ for(var k=0;k<10;k++){var p=pt(R+5,k*18),q=pt(R+5,k*18+180);s+='<line x1="'+p[0]+'" y1="'+p[1]+'" x2="'+q[0]+'" y2="'+q[1]+'"/>'}
+ s+='</g><circle cx="'+CX+'" cy="'+CY+'" r="'+R0+'" fill="none" stroke="#2a2a45" stroke-width="2"/><circle cx="'+CX+'" cy="'+CY+'" r="'+R+'" fill="none" stroke="#2a2a45" stroke-width="2.5"/>';
+ if(cur>=0&&cur<20)s+='<path d="'+cell(0,R,cur*18,cur*18+18)+'" fill="none" stroke="#e8590c" stroke-width="3" stroke-linejoin="round"/>';
+ for(var k=0;k<20;k++){
+  var th=9+18*k,p=pt(R,th),l=A[k],n=l.length,top=Math.cos(th*Math.PI/180)>0,hot=(k===cur);
+  s+='<g transform="translate('+p[0]+' '+p[1]+') rotate('+(top?th:th+180)+')" font-size="11.5" font-family="system-ui,sans-serif" fill="#1a1a2e" text-anchor="middle"'+(hot?' font-weight="700"':'')+'>';
+  for(var j=0;j<n;j++){var y=top?-(6+(n-1-j)*13.5):(6+11+j*13.5);s+='<text x="0" y="'+y+'">'+l[j]+'</text>'}
+  s+='</g>'}
+ return s+'</svg>'}
+function png(){var svg=chart(-1).replace('<svg ','<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="1280" ').replace('</title>','</title><rect width="640" height="640" fill="#fff"/>');
+ return new Promise(function(res,rej){var im=new Image();im.onload=function(){var c=document.createElement("canvas");c.width=c.height=1280;c.getContext("2d").drawImage(im,0,0,1280,1280);c.toBlob(function(b){b?res(b):rej()},"image/png")};im.onerror=rej;im.src="data:image/svg+xml;charset=utf-8,"+encodeURIComponent(svg)})}
+function ui(){
+ var u=document.getElementById("ui"),h="";
+ if(i<20){
+  tmp=S[i]!==null?S[i]:1;
+  h='<div class="card"><div class="prog">Aspect '+(i+1)+' van 20</div><p class="q">Geef aan hoe je scoort op het volgende aspect: <b>'+names[i]+'</b></p><p class="ds">'+D[i]+'</p><div class="val" id="v">'+tmp+'</div><input type="range" id="r" min="1" max="8" step="1" value="'+tmp+'" aria-label="Score voor '+names[i]+'"><div class="ticks"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span></div><div class="ends"><span>laag</span><span>hoog</span></div><div class="row"><button id="b" '+(i?'':'disabled')+'>Vorige</button><button id="n" class="p">'+(i<19?'Volgende':'Toon resultaat')+'</button></div></div>';
+  u.innerHTML=h;
+  document.getElementById("chart").style.display="none";document.getElementById("nt").style.display="none";document.getElementById("d").style.display="none";
+  var r=document.getElementById("r");
+  r.oninput=function(){tmp=+r.value;document.getElementById("v").textContent=tmp};
+  document.getElementById("n").onclick=function(){S[i]=+r.value;i++;ui()};
+  document.getElementById("b").onclick=function(){S[i]=+r.value;i--;ui()};
+ } else {
+  h='<div class="card"><div class="prog">Resultaat</div><p class="q">Dit is jouw profiel op het model.</p><ul class="list">';
+  for(var k=0;k<20;k++)h+='<li><span>'+names[k]+'</span><b>'+S[k]+'</b></li>';
+  h+='</ul><p style="margin:16px 0 0"><button id="n" style="flex:none;background:none;border:0;padding:0;color:var(--ac);text-decoration:underline;cursor:pointer">Opnieuw beginnen</button></p></div>';
+  u.innerHTML=h;
+  document.getElementById("chart").innerHTML=chart(-1);document.getElementById("chart").style.display="";document.getElementById("nt").style.display="";
+  var d=document.getElementById("d");
+  d.style.display="flex";d.onclick=function(){png().then(function(b){var u=URL.createObjectURL(b),a=document.createElement("a");a.href=u;a.download="audhd-spectrum-model.png";document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(u)},1000)}).catch(function(){alert("Opslaan als afbeelding is niet gelukt in deze browser.")})};
+  document.getElementById("n").onclick=function(){S=S.map(function(){return null});i=0;ui()};
+ }}
+ui();
+</script></body></html>
